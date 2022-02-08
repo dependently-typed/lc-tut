@@ -1,4 +1,5 @@
 import readline
+from .eval import eval
 from .lexer import Lexer, LexError
 from .parser import Parser, ParseError
 
@@ -20,12 +21,12 @@ def startrepl():
         try:
             lexer = Lexer(inp)
             parser = Parser(lexer)
-            output = parser.parse()
-
-            for expr in output:
+            ast = parser.parse()
+            
+            # TODO replace this with evaluated output
+            for expr in ast:
                 print(expr)
         except ParseError as e:
             print("[parse error]", e)
         except LexError as e:
             print("[lex error]", e)
-        

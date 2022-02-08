@@ -71,7 +71,6 @@ class Parser:
         else:
             return None
 
-
     def parse_abs(self):
         self.chomp(LambdaSymbol)
         binder = self.chomp(Ident)
