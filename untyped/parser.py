@@ -22,7 +22,7 @@ class Parser:
 
     def parse_named_expr(self):
         self.chomp(Let)
-        name = self.chomp(Ident)
+        name = Var(self.chomp(Ident).value)
         self.chomp(Equals)
         expr = self.parse_exprs_until(lambda tok: isinstance(tok, Let))
         return NamedExpr(name, expr)
@@ -73,7 +73,7 @@ class Parser:
 
     def parse_abs(self):
         self.chomp(LambdaSymbol)
-        binder = self.chomp(Ident)
+        binder = Var(self.chomp(Ident).value)
         self.chomp(Dot)
         body = self.parse_exprs_until(is_boundary_tok)
         return Abs(binder, body)

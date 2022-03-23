@@ -14,6 +14,9 @@ class Var(ValueNode):
     def __str__(self):
         return self.name
 
+    def __hash__(self):
+        return hash(self.name)
+
 @dataclass
 class Num(ValueNode):
     val: int
@@ -39,8 +42,8 @@ class App(AstNode):
 
 @dataclass
 class NamedExpr(AstNode):
-    name: str
+    name: Var
     expr: AstNode
 
     def __str__(self):
-        return f"let {self.name} = {str(self.expr)}"
+        return f"{self.name} = {str(self.expr)}"
