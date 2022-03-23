@@ -14,36 +14,39 @@ class Evaluator(ABC):
         
         bound_vars = set()
 
-        def helper(expr):
+        def helper(expr, depth):
+            result = None
+
             if isinstance(expr, Var):
                 if expr in self.bindings and expr not in bound_vars:
-                    return self.bindings[expr]
+                    result = self.bindings[expr]
                 else:
-                    return expr
+                    result = expr
             elif isinstance(expr, Num):
-                return expr
+                result = expr
             elif isinstance(expr, Abs):
-                bound_vars.add(expr.binder)
-                new_expr = Abs(
+                bound_vars.add((depth, expr.binder))
+                result = Abs(
                     binder=expr.binder,
-                    body=helper(expr.body)
+                    body=helper(expr.body, depth+1)
                 )
-                bound_vars.remove(expr.binder)
-                return new_expr
+                bound_vars.remove((depth, expr.binder))
             elif isinstance(expr, App):
-                return App(
-                    func=helper(expr.func),
-                    arg=helper(expr.arg)
+                result = App(
+                    func=helper(expr.func, depth+1),
+                    arg=helper(expr.arg, depth+1)
                 )
             elif isinstance(expr, NamedExpr):
-                return NamedExpr(
+                result = NamedExpr(
                     name=expr.name,
-                    expr=helper(expr.expr)
+                    expr=helper(expr.expr, depth+1)
                 )
             else:
                 raise EvalError(f"eval not implemented for '{expr}'")
+
+            return result
         
-        return helper(expr)
+        return helper(expr, 0)
 
     def beta_reduce(self, e, x, y):
         """
