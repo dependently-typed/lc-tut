@@ -1,0 +1,6 @@
+let tru = @x. @y. x
+let fls = @x. @y. y
+
+let pair = @x. @y. @f. f x y
+let fst = @p. p tru
+let snd = @p. p fls
