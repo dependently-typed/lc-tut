@@ -17,3 +17,4 @@ This will put you into a repl. The repl currently only prints the parsed express
 - [ ] Comment snippets of code
 - [ ] Write tutorial chapters
 - [ ] Write exercises based on feedback from meeting
+- [ ] Support STLC (and potentially other calculi like system F)
